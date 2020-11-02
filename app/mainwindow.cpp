@@ -606,8 +606,10 @@ void MainWindow::handleTerminalActivity(Terminal* terminal)
         QString message(xi18nc("@info", "Activity detected in monitored terminal in session \"%1\".",
             m_tabBar->tabTitle(session->id())));
 
-        KNotification::event(QLatin1String("activity"), message, QPixmap(), terminal->partWidget(),
-            KNotification::CloseWhenWidgetActivated);
+        KNotification *n = new KNotification(QLatin1String("activity"), KNotification::CloseWhenWindowActivated);
+        n->setText(message);
+        n->setWindow(terminal->partWidget()->window()->windowHandle());
+        n->sendEvent();
     }
 }
 
